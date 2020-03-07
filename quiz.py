@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 from time import sleep
 import json
 frågor = []
@@ -24,7 +26,6 @@ class ui:
 
 
     def prompt(self, prompt_text):
-
         return input("| " + prompt_text + " > ")
 
 
@@ -43,18 +44,38 @@ def info():
 
 class FrågeBot:
     def __init__(self, frågor=""):
+        import json
+        import random
         self.frågor = frågor
-        self.i = 0
-        self.
+        self.index = 0
+        self.score = 0
+        self.streak = 0
+        self.beststreak = 0
 
-    def loadConfig(self, file):
-        with open(file, encoding='utf-8') as json_file:
-            self.frågor = json.loads(json_file.read())
+    def loadConfig(self, input, file=False):
+        if file == True:
+            with open(input, encoding='utf-8') as json_file:
+                self.frågor = json.loads(json_file.read())
+        
+        elif type(input) == dict:
+            self.frågor = input
+        
+        elif type(input) == str:
+            self.frågor = json.loads(input)
+
+    def randomorder(self, fråga):
+        pass
     
-    def fråga(self, index):
+    
+    def fråga(self, index=-1):
         if self.frågor == "": # Inga frågor finns
             ui.echo("Inga frågor laddade!")
             return [False]
+
+        if index == -1:
+            for i in range(len(self.frågor)-1):
+                self.fråga(i)
+        
         fråga = self.frågor[index]
         ui.line()
         print("| Fråga:", fråga["fråga"])
@@ -65,30 +86,47 @@ class FrågeBot:
         while True:
             try:
                 svar = int(ui.prompt("val"))
+                if svar < 1 or svar > len(fråga["svar"]):
+                    raise ValueError
                 break
             except ValueError:
-                ui.echo("Ett tal tack")
+                ui.echo("Ett tal mellan 1 och " + str(len(fråga["svar"])) + " tack!")
             except KeyboardInterrupt:
                 print("\n| Skippar...")
                 return [False]
 
         if svar == fråga["rätt"]:
+            self.score += 1
+            self.streak += 1
+            if self.streak > self.beststreak:
+                self.beststreak = self.streak
             return [True]
         else:
+            self.streak = 0
             return [False]
 
     def fråga_nästa(self):
-        self.fråga(self.i)
-        self.i += 1
+        self.fråga(self.index)
+        self.index += 1
+
+    def finalscore(self):
+        p = 5 - len(str(self.score))
+        p2 = 8 - len(str(self.streak))
+        print("┏━━━━━━━━━━━━━━━━━━━━━┓")
+        print("│    Du fick          │")
+        print("│      ", self.score, "poäng!", " " * p,  "│")
+        print("│ och din bästa streak│")
+        print("│      var", str(self.beststreak) + "!", " " * p2, "│")
+        print("┗━━━━━━━━━━━━━━━━━━━━━┛")
 
 Frågebot = FrågeBot()
 
 
-Frågebot.loadConfig("frågor.json")
+Frågebot.loadConfig("frågor.json", file=True)
 
+Frågebot.fråga()
 
-for x in range(2):
-    Frågebot.fråga_nästa()
+Frågebot.finalscore()
 
 # Frågebot.fråga(1)
 
