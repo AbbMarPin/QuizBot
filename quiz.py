@@ -4,6 +4,7 @@ from time import sleep
 import json
 frågor = []
 
+
 class ui:
     def __init__(self):
         pass
@@ -11,29 +12,28 @@ class ui:
     def title(self):
         print("""
     ┏━━━━━━━━━━━━━━━━━━━━━┓
-    │  ultimate quiz      │
-    │      of destiny!!!  │
-    │                     │
+    ┃  ultimate quiz      ┃
+    ┃      of destiny!!!  ┃
+    ┃                     ┃
     ┗━━━━━━━━━━━━━━━━━━━━━┛
         """)
 
     def line(self):
         print("="*25)
 
-
     def echo(self, text):
         print("|", text)
 
-
     def prompt(self, prompt_text):
         return input("| " + prompt_text + " > ")
-
 
     def exit_(self, text):
         print("\n|", text)
         exit()
 
+
 ui = ui()
+
 
 def info():
     ui.echo("1. starta quiz")
@@ -41,6 +41,7 @@ def info():
     ui.echo("3. avsluta")
     option = ui.prompt("Val")
     return option
+
 
 class FrågeBot:
     def __init__(self, frågor=""):
@@ -56,33 +57,42 @@ class FrågeBot:
         if file == True:
             with open(input, encoding='utf-8') as json_file:
                 self.frågor = json.loads(json_file.read())
-        
+
         elif type(input) == dict:
             self.frågor = input
-        
+
         elif type(input) == str:
             self.frågor = json.loads(input)
 
     def randomorder(self, fråga):
-        pass
-    
-    
+        # TODO Random stuff
+        fråga = ""
+        svar = ""
+        rätt = 1
+        return {
+            "fråga": fråga,
+            "svar": [
+                svar
+            ],
+            "rätt": rätt
+        }
+
     def fråga(self, index=-1):
-        if self.frågor == "": # Inga frågor finns
+        if self.frågor == "":  # Inga frågor finns
             ui.echo("Inga frågor laddade!")
             return [False]
 
         if index == -1:
             for i in range(len(self.frågor)-1):
                 self.fråga(i)
-        
+
         fråga = self.frågor[index]
         ui.line()
         print("| Fråga:", fråga["fråga"])
         ui.echo("svarsalternativ:")
         for n, x in zip(range(1, len(fråga["svar"]) + 1), fråga["svar"]):
             ui.echo(str(n) + " | " + x)
-        
+
         while True:
             try:
                 svar = int(ui.prompt("val"))
@@ -90,7 +100,8 @@ class FrågeBot:
                     raise ValueError
                 break
             except ValueError:
-                ui.echo("Ett tal mellan 1 och " + str(len(fråga["svar"])) + " tack!")
+                ui.echo("Ett tal mellan 1 och " +
+                        str(len(fråga["svar"])) + " tack!")
             except KeyboardInterrupt:
                 print("\n| Skippar...")
                 return [False]
@@ -113,14 +124,14 @@ class FrågeBot:
         p = 5 - len(str(self.score))
         p2 = 8 - len(str(self.streak))
         print("┏━━━━━━━━━━━━━━━━━━━━━┓")
-        print("│    Du fick          │")
-        print("│      ", self.score, "poäng!", " " * p,  "│")
-        print("│ och din bästa streak│")
-        print("│      var", str(self.beststreak) + "!", " " * p2, "│")
+        print("┃    Du fick          ┃")
+        print("┃      ", self.score, "poäng!", " " * p,  "┃")
+        print("┃ och din bästa streak┃")
+        print("┃      var", str(self.beststreak) + "!", " " * p2, "┃")
         print("┗━━━━━━━━━━━━━━━━━━━━━┛")
 
-Frågebot = FrågeBot()
 
+Frågebot = FrågeBot()
 
 Frågebot.loadConfig("frågor.json", file=True)
 
