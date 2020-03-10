@@ -2,52 +2,18 @@
 # -*- coding: utf-8 -*-
 from time import sleep
 import json
-frågor = []
-
-
-class ui:
-    def __init__(self):
-        pass
-
-    def title(self):
-        print("""
-    ┏━━━━━━━━━━━━━━━━━━━━━┓
-    ┃  ultimate quiz      ┃
-    ┃      of destiny!!!  ┃
-    ┃                     ┃
-    ┗━━━━━━━━━━━━━━━━━━━━━┛
-        """)
-
-    def line(self):
-        print("="*25)
-
-    def echo(self, text):
-        print("|", text)
-
-    def prompt(self, prompt_text):
-        return input("| " + prompt_text + " > ")
-
-    def exit_(self, text):
-        print("\n|", text)
-        exit()
-
+import random
+from ui import ui
 
 ui = ui()
 
-
-def info():
-    ui.echo("1. starta quiz")
-    ui.echo("2. gör nytt quiz")
-    ui.echo("3. avsluta")
-    option = ui.prompt("Val")
-    return option
-
-
 class FrågeBot:
-    def __init__(self, frågor=""):
+    def __init__(self, randomize=False, frågor="", verbose=True):
         import json
         import random
         self.frågor = frågor
+        self.verbose = verbose
+        self.randomize = randomize
         self.index = 0
         self.score = 0
         self.streak = 0
@@ -66,15 +32,21 @@ class FrågeBot:
 
     def randomorder(self, fråga):
         # TODO Random stuff
-        fråga = ""
-        svar = ""
-        rätt = 1
+        # vet vilken räät svar är
+        # lista med 1 till antal svar med random nummer som sätts och scrambelar
+        # svaren och sätter rätt svar på rätt
+        rättsvar = fråga["svar"][fråga["rätt"]-1]
+
+        randlista = random.sample(fråga["svar"], len(fråga["svar"]))
+
+        for n, svar in zip(range(1, len(randlista)+1), randlista):
+            if svar == rättsvar:
+                rättrandsvar = n
+
         return {
-            "fråga": fråga,
-            "svar": [
-                svar
-            ],
-            "rätt": rätt
+            "fråga": fråga["fråga"],
+            "svar": randlista,
+            "rätt": rättrandsvar
         }
 
     def fråga(self, index=-1):
@@ -87,6 +59,9 @@ class FrågeBot:
                 self.fråga(i)
 
         fråga = self.frågor[index]
+        if self.randomize:
+            fråga = self.randomorder(fråga)
+
         ui.line()
         print("| Fråga:", fråga["fråga"])
         ui.echo("svarsalternativ:")
@@ -111,9 +86,17 @@ class FrågeBot:
             self.streak += 1
             if self.streak > self.beststreak:
                 self.beststreak = self.streak
+            if self.verbose:
+                print("| Rätt!!")
+                print("| Poäng:", self.score)
+                print("| Streak:", self.streak)
             return [True]
         else:
             self.streak = 0
+            if self.verbose:
+                print("| Fel!!")
+                print("| Poäng:", self.score)
+                print("| Streak:", self.streak)
             return [False]
 
     def fråga_nästa(self):
@@ -130,36 +113,3 @@ class FrågeBot:
         print("┃      var", str(self.beststreak) + "!", " " * p2, "┃")
         print("┗━━━━━━━━━━━━━━━━━━━━━┛")
 
-
-Frågebot = FrågeBot()
-
-Frågebot.loadConfig("frågor.json", file=True)
-
-Frågebot.fråga()
-
-Frågebot.finalscore()
-
-# Frågebot.fråga(1)
-
-# def main():
-#     title()
-#     svar = info()
-#     if svar == "1":
-#         # stata quiz
-#         for x in frågor:
-#             fråga(x)
-#     elif svar == "2":
-#         echo("ny quiz")
-#     elif svar == "3":
-#         exit_("Avlsutar...")
-#     else:
-#         pass
-
-# if __name__ == "__main__":
-#     while 1:
-#         try:
-#             main()
-#         except Exception:
-#             exit_("oväntat fel")
-#         except KeyboardInterrupt:
-#             exit_("Användaren avslutate")

@@ -2,10 +2,10 @@
     {
         "fråga": "hur många magar har en ko?",
         "svar": [
-            "3 stycken",
-            "1 stycken",
-            "4 stycken",
-            "2 stycken"
+            "tre stycken",
+            "en stycken",
+            "fyra stycken",
+            "två stycken"
         ],
         "rätt": 3
     },
