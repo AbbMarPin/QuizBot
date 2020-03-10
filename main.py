@@ -11,10 +11,10 @@ def info():
     return option
 
 
-Frågebot = FrågeBot(randomize=False, verbose=True)
+Frågebot = FrågeBot(randomize_awnsers=True, verbose=True)
 
 Frågebot.loadConfig("frågor.json", file=True)
 
-Frågebot.fråga()
+Frågebot.fråga(randomize=True)
 
 Frågebot.finalscore()

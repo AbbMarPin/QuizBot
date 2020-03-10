@@ -8,12 +8,12 @@ from ui import ui
 ui = ui()
 
 class FrågeBot:
-    def __init__(self, randomize=False, frågor="", verbose=True):
+    def __init__(self, randomize_awnsers=False, frågor="", verbose=True):
         import json
         import random
         self.frågor = frågor
         self.verbose = verbose
-        self.randomize = randomize
+        self.randomize = randomize_awnsers
         self.index = 0
         self.score = 0
         self.streak = 0
@@ -49,14 +49,31 @@ class FrågeBot:
             "rätt": rättrandsvar
         }
 
-    def fråga(self, index=-1):
+    def fråga(self, index=-1, randomize=False):
         if self.frågor == "":  # Inga frågor finns
             ui.echo("Inga frågor laddade!")
             return [False]
 
         if index == -1:
-            for i in range(len(self.frågor)-1):
-                self.fråga(i)
+            if randomize:
+                questions = []
+                for x in range(len(self.frågor)):
+                    questions.append(x)
+                print(questions)
+                new_questions = random.sample(questions, len(questions))
+                while new_questions == questions: # se till att det blir random
+                    new_questions = random.sample(questions, len(questions))
+                print(new_questions)
+                n = 0
+                for i in new_questions:
+                    n += 1
+                    print(i)
+                    self.fråga(i)
+
+            else:    
+                for i in range(len(self.frågor)):
+                    self.fråga(i)
+            return
 
         fråga = self.frågor[index]
         if self.randomize:
