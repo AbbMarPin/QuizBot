@@ -1,4 +1,4 @@
-from FrågeBot import FrågeBot
+import FrågeBot
 from ui import ui
 
 ui = ui()
@@ -11,9 +11,13 @@ def info():
     return option
 
 
-Frågebot = FrågeBot(randomize_awnsers=True, verbose=True)
+Frågebot = FrågeBot.FrågeBot(randomize_awnsers=True, verbose=True)
 
-Frågebot.loadConfig("frågor.json", file=True)
+Frågor = FrågeBot.opentdbparser("https://opentdb.com/api.php?amount=10")
+
+Frågebot.loadConfig(Frågor)
+
+# Frågebot.loadConfig("frågor.json", file=True)
 
 Frågebot.fråga(randomize=True)
 

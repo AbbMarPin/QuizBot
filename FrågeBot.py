@@ -5,7 +5,9 @@ import json
 import random
 from ui import ui
 
+
 ui = ui()
+
 
 class FrågeBot:
     def __init__(self, randomize_awnsers=False, frågor="", verbose=True):
@@ -24,7 +26,7 @@ class FrågeBot:
             with open(input, encoding='utf-8') as json_file:
                 self.frågor = json.loads(json_file.read())
 
-        elif type(input) == dict:
+        elif type(input) == list:
             self.frågor = input
 
         elif type(input) == str:
@@ -59,18 +61,18 @@ class FrågeBot:
                 questions = []
                 for x in range(len(self.frågor)):
                     questions.append(x)
-                print(questions)
+                # print(questions)
                 new_questions = random.sample(questions, len(questions))
-                while new_questions == questions: # se till att det blir random
+                while new_questions == questions:  # se till att det blir random
                     new_questions = random.sample(questions, len(questions))
-                print(new_questions)
+                # print(new_questions)
                 n = 0
                 for i in new_questions:
                     n += 1
-                    print(i)
+                    # print(i)
                     self.fråga(i)
 
-            else:    
+            else:
                 for i in range(len(self.frågor)):
                     self.fråga(i)
             return
@@ -130,3 +132,53 @@ class FrågeBot:
         print("┃      var", str(self.beststreak) + "!", " " * p2, "┃")
         print("┗━━━━━━━━━━━━━━━━━━━━━┛")
 
+
+def opentdbparser(url):
+    import requests
+
+    try:
+        res = requests.get(url).text
+        res = json.loads(res)["results"]
+    except:
+        print("something went wrong when downloading, please try again")
+        exit()
+
+    frågor = []
+
+    for fråga in res:
+        if fråga["type"] == "multiple":
+            svar = []
+            for x in fråga["incorrect_answers"]:
+                svar.append(x)
+
+            svar.append(fråga["correct_answer"])
+
+            rättsvar = svar[-1:][0]
+
+            randlista = random.sample(svar, len(svar))
+
+            for n, svar in zip(range(1, len(randlista)+1), randlista):
+                # print(svar, rättsvar)
+                if svar == rättsvar:
+                    rättrandsvar = n
+
+
+            frågor.append({
+                "fråga": fråga["question"],
+                "svar": randlista,
+                "rätt": rättrandsvar
+            })
+        elif fråga["type"] == "multiple":
+
+            if fråga["correct_answer"] == "True":
+                rättsvar = 1
+            else:
+                rättsvar = 2
+
+            frågor.append({
+                "fråga": fråga["question"],
+                "svar": ["Sant", "Falskt"],
+                "rätt": rättsvar
+            })
+
+    return frågor
