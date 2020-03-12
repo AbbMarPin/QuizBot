@@ -102,7 +102,7 @@ class FrågeBot:
 
         if svar == fråga["rätt"]:
             self.streak += 1
-            self.score += 10 * self.streak
+            self.score += 10 * self.streak/10
             if self.streak > self.beststreak:
                 self.beststreak = self.streak
             if self.verbose:

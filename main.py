@@ -4,10 +4,12 @@ from ui import ui
 ui = ui()
 
 def info():
-    ui.echo("1. starta quiz")
+    ui.echo("1. ladda quiz")
     ui.echo("2. gör nytt quiz")
     ui.echo("3. avsluta")
     option = ui.prompt("Val")
+    if option == "3":
+        exit()
     return option
 
 
