@@ -101,21 +101,24 @@ class FrågeBot:
                 return [False]
 
         if svar == fråga["rätt"]:
-            self.score += 1
             self.streak += 1
+            self.score += 10 * self.streak
             if self.streak > self.beststreak:
                 self.beststreak = self.streak
             if self.verbose:
                 print("| Rätt!!")
                 print("| Poäng:", self.score)
                 print("| Streak:", self.streak)
+                sleep(.5)
             return [True]
         else:
             self.streak = 0
             if self.verbose:
                 print("| Fel!!")
+                print("| Rätt Svar:", fråga["svar"][fråga["rätt"]-1])
                 print("| Poäng:", self.score)
                 print("| Streak:", self.streak)
+                sleep(1)
             return [False]
 
     def fråga_nästa(self):
@@ -135,6 +138,7 @@ class FrågeBot:
 
 def opentdbparser(url):
     import requests
+    import html
 
     try:
         res = requests.get(url).text
@@ -146,6 +150,13 @@ def opentdbparser(url):
     frågor = []
 
     for fråga in res:
+
+        for svar in range(len(fråga["incorrect_answers"])-1): # fixa html encodeing
+            fråga["incorrect_answers"][svar] = html.unescape(fråga["incorrect_answers"][svar])
+        fråga["correct_answer"] = html.unescape(fråga["correct_answer"])
+        fråga["question"] = html.unescape(fråga["question"])
+            
+
         if fråga["type"] == "multiple":
             svar = []
             for x in fråga["incorrect_answers"]:
