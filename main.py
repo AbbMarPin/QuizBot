@@ -1,4 +1,4 @@
-import FrågeBot
+import QuizBot
 from ui import ui
 
 ui = ui()
@@ -12,15 +12,15 @@ def info():
         exit()
     return option
 
+if info
+QB = QuizBot.QuizBot(randomize_awnsers=True, verbose=True)
 
-Frågebot = FrågeBot.FrågeBot(randomize_awnsers=True, verbose=True)
+quiz = QuizBot.opentdbparser("https://opentdb.com/api.php?amount=100")
 
-Frågor = FrågeBot.opentdbparser("https://opentdb.com/api.php?amount=10")
-
-Frågebot.loadConfig(Frågor)
+QB.loadConfig(quiz)
 
 # Frågebot.loadConfig("frågor.json", file=True)
 
-Frågebot.fråga(randomize=True)
+QB.fråga(randomize=True)
 
-Frågebot.finalscore()
+QB.finalscore()

@@ -9,10 +9,8 @@ from ui import ui
 ui = ui()
 
 
-class FrågeBot:
+class QuizBot:
     def __init__(self, randomize_awnsers=False, frågor="", verbose=True):
-        import json
-        import random
         self.frågor = frågor
         self.verbose = verbose
         self.randomize = randomize_awnsers
@@ -20,6 +18,7 @@ class FrågeBot:
         self.score = 0
         self.streak = 0
         self.beststreak = 0
+        self.numofquestions = 0
 
     def loadConfig(self, input, file=False):
         if file == True:
@@ -70,7 +69,8 @@ class FrågeBot:
                 for i in new_questions:
                     n += 1
                     # print(i)
-                    self.fråga(i)
+                    if self.fråga(i) == "exit":
+                        return [False]
 
             else:
                 for i in range(len(self.frågor)):
@@ -81,7 +81,9 @@ class FrågeBot:
         if self.randomize:
             fråga = self.randomorder(fråga)
 
+        self.numofquestions += 1
         ui.line()
+        print("|", str(self.numofquestions)+"/"+str(len(self.frågor)), "(" + str(round(self.numofquestions/len(self.frågor), 3)* 100)+ "%)")
         print("| Fråga:", fråga["fråga"])
         ui.echo("svarsalternativ:")
         for n, x in zip(range(1, len(fråga["svar"]) + 1), fråga["svar"]):
@@ -89,7 +91,10 @@ class FrågeBot:
 
         while True:
             try:
-                svar = int(ui.prompt("val"))
+                svar = ui.prompt("val")
+                if svar.upper() == "EXIT":
+                    return "exit"
+                svar = int(svar)
                 if svar < 1 or svar > len(fråga["svar"]):
                     raise ValueError
                 break
@@ -99,6 +104,9 @@ class FrågeBot:
             except KeyboardInterrupt:
                 print("\n| Skippar...")
                 return [False]
+            except EOFError:
+                print("\n| Avslutar...")
+                exit()
 
         if svar == fråga["rätt"]:
             self.streak += 1
