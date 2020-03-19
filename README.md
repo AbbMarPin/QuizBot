@@ -4,9 +4,9 @@ A Python library for quizzing
 
 # Usage
 ```pycon
->>> from FrågeBot import FrågeBot
+>>> import QuizBot
 
->>> Frågebot = FrågeBot(randomize=False, verbose=True) # Initiera frågebotten, randomisera svars alternativ
+>>> Frågebot = QuizBot.QuizBot(randomize=False, verbose=True) # Initiera frågebotten, randomisera svars alternativ
                                                        # Skriv också ut om det bler rätt eller fel
 >>> Frågebot.loadConfig("frågor.json", file=True) # ladda frågor fån en fil (kan vara string eller dict också)
 
