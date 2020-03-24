@@ -44,3 +44,26 @@ A Python library for quizzing
     ┃ och din bästa streak┃
     ┃      var 2!         ┃
     ┗━━━━━━━━━━━━━━━━━━━━━┛
+    
+# Quiz format
+    [
+        {
+            "fråga": "hur många magar har en ko?",
+            "svar": [
+                "tre stycken",
+                "en stycken",
+                "fyra stycken",
+                "två stycken"
+            ],
+            "rätt": 3
+        },
+        {
+            "fråga": "vilken är rätt???",
+            "svar":[
+                "rätt",
+                "fel",
+                "*fel*"
+            ],
+            "rätt": 1
+        }
+    ]
