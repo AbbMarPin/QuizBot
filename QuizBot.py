@@ -3,10 +3,6 @@
 from time import sleep
 import json
 import random
-from ui import ui
-
-
-ui = ui()
 
 
 class QuizBot:
@@ -25,8 +21,6 @@ class QuizBot:
             with open(input, encoding='utf-8') as json_file:
                 self.frågor = json.loads(json_file.read())
 
-        elif type(input) == list:
-            self.frågor = input
 
         elif type(input) == str:
             self.frågor = json.loads(input)
@@ -52,7 +46,7 @@ class QuizBot:
 
     def fråga(self, index=-1, randomize=False):
         if self.frågor == "":  # Inga frågor finns
-            ui.echo("Inga frågor laddade!")
+            print("| Inga frågor laddade!")
             return [False]
 
         if index == -1:
@@ -62,8 +56,9 @@ class QuizBot:
                     questions.append(x)
                 # print(questions)
                 new_questions = random.sample(questions, len(questions))
-                while new_questions == questions:  # se till att det blir random
-                    new_questions = random.sample(questions, len(questions))
+                if len(questions) != 1: # gör inte om det är en
+                    while new_questions == questions:  # se till att det blir random
+                        new_questions = random.sample(questions, len(questions))
                 # print(new_questions)
                 n = 0
                 for i in new_questions:
@@ -76,22 +71,26 @@ class QuizBot:
                 for i in range(len(self.frågor)):
                     self.fråga(i)
             return
-
+        elif index == 1:
+            print("| Control-C för att skippa")
+            print("| 'Exit' för att avsluta")
+            print("=" * 35)
         fråga = self.frågor[index]
         if self.randomize:
             fråga = self.randomorder(fråga)
 
         self.numofquestions += 1
-        ui.line()
-        print("|", str(self.numofquestions)+"/"+str(len(self.frågor)), "(" + str(round(self.numofquestions/len(self.frågor), 3)* 100)+ "%)")
+        print("="*25)
+        print("|", str(self.numofquestions)+"/"+str(len(self.frågor)),
+              "(" + str(round(self.numofquestions/len(self.frågor) * 100, 2) ) + "%)")
         print("| Fråga:", fråga["fråga"])
-        ui.echo("svarsalternativ:")
+        print("| svarsalternativ:")
         for n, x in zip(range(1, len(fråga["svar"]) + 1), fråga["svar"]):
-            ui.echo(str(n) + " | " + x)
-
+            print("|", n, "|", x)
+ 
         while True:
             try:
-                svar = ui.prompt("val")
+                svar = input("| val > ")
                 if svar.upper() == "EXIT":
                     return "exit"
                 svar = int(svar)
@@ -99,8 +98,9 @@ class QuizBot:
                     raise ValueError
                 break
             except ValueError:
-                ui.echo("Ett tal mellan 1 och " +
-                        str(len(fråga["svar"])) + " tack!")
+                print("| Ett tal mellan 1 och",
+                      len(fråga["svar"]), "tack!")
+                print("| 'Exit' för att avsluta")
             except KeyboardInterrupt:
                 print("\n| Skippar...")
                 return [False]
@@ -134,7 +134,7 @@ class QuizBot:
         self.index += 1
 
     def finalscore(self):
-        p = 5 - len(str(self.score))
+        p = 5 - len(str(self.score))  # padding
         p2 = 8 - len(str(self.streak))
         print("┏━━━━━━━━━━━━━━━━━━━━━┓")
         print("┃    Du fick          ┃")
@@ -142,11 +142,17 @@ class QuizBot:
         print("┃ och din bästa streak┃")
         print("┃      var", str(self.beststreak) + "!", " " * p2, "┃")
         print("┗━━━━━━━━━━━━━━━━━━━━━┛")
+        return {
+            "score": self.score,
+            "best_streak": self.score
+        }
 
 
 def opentdbparser(url):
     import requests
     import html
+
+    print("| Laddar Ned...", end="\r")
 
     try:
         res = requests.get(url).text
@@ -154,16 +160,17 @@ def opentdbparser(url):
     except:
         print("something went wrong when downloading, please try again")
         exit()
+    print("               ", end="\r")
 
     frågor = []
 
     for fråga in res:
 
-        for svar in range(len(fråga["incorrect_answers"])-1): # fixa html encodeing
-            fråga["incorrect_answers"][svar] = html.unescape(fråga["incorrect_answers"][svar])
+        for svar in range(len(fråga["incorrect_answers"])-1):  # fixa html encodeing
+            fråga["incorrect_answers"][svar] = html.unescape(
+                fråga["incorrect_answers"][svar])
         fråga["correct_answer"] = html.unescape(fråga["correct_answer"])
         fråga["question"] = html.unescape(fråga["question"])
-            
 
         if fråga["type"] == "multiple":
             svar = []
@@ -180,7 +187,6 @@ def opentdbparser(url):
                 # print(svar, rättsvar)
                 if svar == rättsvar:
                     rättrandsvar = n
-
 
             frågor.append({
                 "fråga": fråga["question"],

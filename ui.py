@@ -13,13 +13,18 @@ class ui:
         """)
 
     def line(self):
-        print("="*25)
+        print("="*35)
 
     def echo(self, text):
         print("|", text)
 
     def prompt(self, prompt_text):
         return input("| " + prompt_text + " > ")
+
+    def prompt_list(self, list, text):
+        for x, n in zip(list, range(1, len(list) + 1)):
+            print("|", n, "|", x)
+        return input("| " + text + " > ")
 
     def exit_(self, text):
         print("\n|", text)
