@@ -53,11 +53,11 @@ while True:
 
     elif val == "2":
         ui.line()
-        ui.echo("Välkommen till denna fråge generator!")
+        ui.echo("Välkommen till denna frågegenerator!")
         ui.echo("")
-        ui.echo("Frågor fungerar såhär:")
-        ui.echo("En fråga")
-        ui.echo("2-oändigt många svar")
+        ui.echo("Frågor fungerar så här:")
+        ui.echo("En Frågeställnig")
+        ui.echo("2 till oändigt många svar")
         frågor = []
 
         while True:
@@ -65,8 +65,9 @@ while True:
             antal_frågor = len(frågor) + 1
             fråga = {}
             try:
-                ui.echo("Fråga " + str(antal_frågor))
-                header = ui.prompt("Fråga, 'exit' för att avsluta")
+                ui.echo("Fråga nr." + str(antal_frågor))
+                ui.echo("'exit' för att avsluta")
+                header = ui.prompt("Fråga")
             except KeyboardInterrupt:
                 break
             if header.upper() == "EXIT":
@@ -77,7 +78,7 @@ while True:
             exit = False
             while exit == False:
                 try:
-                    a = ui.prompt("Svar")
+                    a = ui.prompt("Svar nr." + str(len(svar)+1))
                 except KeyboardInterrupt:
                     exit = True
                 if a.upper() == "EXIT":
@@ -116,16 +117,16 @@ while True:
         try:
             a = ui.prompt_list(["sträng (printa)", "fil"], "val")
         except:
-            print("\n", json.dumps(frågor))
+            print("\n\n", json.dumps(frågor), end="\n\n")
 
         if a == "1":
-            print("\n", json.dumps(frågor))
+            print("\n\n", json.dumps(frågor), end="\n\n")
         elif a == "2":
             print()
             try:
                 fil_namn = ui.prompt("Vad ska filen heta?")
             except KeyboardInterrupt:
-                print("\n", json.dumps(frågor))
+                print("\n\n", json.dumps(frågor), end="\n\n")
                 break
             
             
