@@ -21,9 +21,11 @@ class QuizBot:
             with open(input, encoding='utf-8') as json_file:
                 self.frågor = json.loads(json_file.read())
 
-
         elif type(input) == str:
             self.frågor = json.loads(input)
+
+        elif type(input) == list:
+            self.frågor = input
 
     def randomorder(self, fråga):
         # TODO Random stuff
