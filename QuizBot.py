@@ -195,7 +195,7 @@ def opentdbparser(url):
                 "svar": randlista,
                 "rätt": rättrandsvar
             })
-        elif fråga["type"] == "multiple":
+        elif fråga["type"] == "boolean":
 
             if fråga["correct_answer"] == "True":
                 rättsvar = 1
