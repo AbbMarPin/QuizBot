@@ -58,9 +58,10 @@ class QuizBot:
                     questions.append(x)
                 # print(questions)
                 new_questions = random.sample(questions, len(questions))
-                if len(questions) != 1: # gör inte om det är en
+                if len(questions) != 1:  # gör inte om det är en
                     while new_questions == questions:  # se till att det blir random
-                        new_questions = random.sample(questions, len(questions))
+                        new_questions = random.sample(
+                            questions, len(questions))
                 # print(new_questions)
                 n = 0
                 for i in new_questions:
@@ -84,12 +85,12 @@ class QuizBot:
         self.numofquestions += 1
         print("="*25)
         print("|", str(self.numofquestions)+"/"+str(len(self.frågor)),
-              "(" + str(round(self.numofquestions/len(self.frågor) * 100, 2) ) + "%)")
+              "(" + str(round(self.numofquestions/len(self.frågor) * 100, 2)) + "%)")
         print("| Fråga:", fråga["fråga"])
         print("| svarsalternativ:")
         for n, x in zip(range(1, len(fråga["svar"]) + 1), fråga["svar"]):
             print("|", n, "|", x)
- 
+
         while True:
             try:
                 svar = input("| val > ")
