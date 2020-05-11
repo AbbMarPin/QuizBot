@@ -34,14 +34,17 @@ while True:
 
             val = ui.prompt_list(
                 ["Fil", "opentdb Url", "sträng"], "Val").upper()
-            data = ui.prompt("")
 
             if val == "1":
+                data = ui.prompt("")
                 QB.loadConfig(data, file=True)
             elif val == "2":
+                ui.echo("https://opentdb.com/api_config.php")
+                data = ui.prompt("")
                 # https://opentdb.com/api.php?amount=100
                 QB.loadConfig(QuizBot.opentdbparser(data))
             elif val == "3":
+                data = ui.prompt("")
                 QB.loadConfig(data)
 
             QB.fråga(randomize=True)
