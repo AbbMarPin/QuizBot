@@ -210,3 +210,6 @@ def opentdbparser(url):
             })
 
     return frågor
+
+if __name__ == "__main__":
+    import main

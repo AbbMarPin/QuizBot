@@ -15,9 +15,9 @@ def info():
     return option
 
 
-QB = QuizBot.QuizBot(randomize_awnsers=True, verbose=True)
-
 while True:
+
+    QB = QuizBot.QuizBot(randomize_awnsers=True, verbose=True)
 
     try:
         val = info()
