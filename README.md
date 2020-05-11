@@ -48,6 +48,8 @@ A Python library for quizzing
 # Quiz format
 
 Detta är formatet för frågor som programet kan läsa, en "fråga", några "svar" och ett index (börjar på 1) på vilket svar som är rätt
+
+
     [
         {
             "fråga": "hur många magar har en ko?",
