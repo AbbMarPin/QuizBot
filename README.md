@@ -7,7 +7,7 @@ A Python library for quizzing
 >>> import QuizBot
 
 >>> Frågebot = QuizBot.QuizBot(randomize=False, verbose=True) # Initiera frågebotten, randomisera svars alternativ
-                                                       # Skriv också ut om det bler rätt eller fel
+                                                       # Skriv också ut om det blir rätt eller fel
 >>> Frågebot.loadConfig("frågor.json", file=True) # ladda frågor fån en fil (kan vara string eller dict också)
 
 >>> Frågebot.fråga(randomize=True) # Fråga alla fråga i slumpmässig ordning
