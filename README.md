@@ -1,13 +1,13 @@
 # QuizBot
 A Python library for quizzing
 
-# Såhär fungerar det
+# Så här fungerar det
 
 ui är en hjälpklass som kan fråga frågor, en lista med frågor och skriva saker på ett fint sätt
 
 main är ett exempelprogram som kan hjälpa dig fråga frågor och till och med skapa nya
 
-Quizbot är filen med klassen quizbot som kan fråga alla frågor och håller reda på poäng osv
+Quizbot är filen med klassen Quizbot som kan fråga alla frågor och håller reda på poäng osv
 
 Quizbot kan hämta frågor från 3 ställen, en sträng som har blivit exporterad av fråge generatorn, en JSON fil eller en opentdb url. De första två är lätta att fixa eftersom den laddar in ett JSON objekt. Opentdb har en annan funktion som tar in en url, laddar ned JSON objektet, html avkodar texten och till sist konverterar från deras format till et format som Quizbot kan förstå.
 
