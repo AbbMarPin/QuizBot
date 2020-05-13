@@ -1,6 +1,26 @@
 # QuizBot
 A Python library for quizzing
 
+# Såhär fungerar det
+
+Quizbot kan hämta frågor från 3 ställen, en sträng som har blivit exporterad av fråge generatorn, en JSON fil eller en opentdb url. De första två är lätta att fixa eftersom den laddar in ett JSON objekt. Opentdb har en annan funktion som tar in en url, laddar ned JSON objektet, html avkodar texten och till sist konverterar från deras format till et format som Quizbot kan förstå.
+
+När Quizbot får frågorna som den ska fråga och ”fråga” funktionen körs kollar den först om ett index för en specifik fråga har angetts. 
+
+Om det inte har det vill vi köra funktionen genom alla frågor på en gång. Vi kör funktionen igen med en slumpmässad frågeordning (om specificerat) med en specificerad index. 
+
+Om det har det frågas den specifika frågan och om den ska slumpa frågealternativen gör den det med randomorder funktionen.
+
+Randomorder funktionen tar in en fråga som argument och slumpar ordningen av svarsalternativen medan den håller koll på vilket svar som är rätt. Till sist returneras den nya frågan.
+
+Headern för frågan skriv ut och ett procenttal för hur långt man har kommit visas.
+
+Svarsalternativen skrivs ut i ordning och om man väljer ett alternativ som inte finns ställs frågan igen. Om användaren skriver ”exit” avslutas frågeställningen.
+
+Om användaren har svarat rätt sparas 10 poäng multiplicerat med streaken delat med 10 till användarens poäng. Detta är för att ge användare med högre streak värde mer poäng.
+
+När alla frågor är slut avslutas funktionen och ”finalscore” kan köras. Denna funktion skriver ut användarens poäng och bästa streak på ett fint sätt med padding för att alla väggar ska sitta där de ska.
+
 
 # Usage
 ```pycon
